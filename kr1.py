@@ -260,7 +260,87 @@ if __name__ == "__main__":
 Считывание результата по строкам:
 [0, 1, 1, 2, 3, 4, 5]
 
-ТЕРНАРНЫЙ ПОИСК СЮДА
+from typing import List, Tuple
+
+def ternary_search_array(arr: List[int], target: int) -> int:
+    """
+    Тернарный поиск по отсортированному массиву (по значению).
+    Возвращает индекс target или -1.
+    """
+    l, r = 0, len(arr) - 1
+    while l <= r:
+        # Две точки деления диапазона на три части
+        mid1 = l + (r - l) // 3
+        mid2 = r - (r - l) // 3
+
+        if arr[mid1] == target:
+            return mid1
+        if arr[mid2] == target:
+            return mid2
+
+        if target < arr[mid1]:
+            r = mid1 - 1
+        elif target > arr[mid2]:
+            l = mid2 + 1
+        else:
+            l = mid1 + 1
+            r = mid2 - 1
+    return -1
+
+def ternary_search_unimodal(f, left: float, right: float, eps: float = 1e-7) -> float:
+    """
+    Тернарный поиск экстремума (максимума) на унимодальной функции f на отрезке [left, right].
+    Возвращает точку x, где достигается максимум (приближенно).
+    Чтобы искать минимум, инвертируйте функцию: g(x) = -f(x).
+    """
+    l, r = left, right
+    while r - l > eps:
+        m1 = l + (r - l) / 3.0
+        m2 = r - (r - l) / 3.0
+        if f(m1) < f(m2):
+            l = m1
+        else:
+            r = m2
+    return (l + r) / 2.0
+
+if __name__ == "__main__":
+    # Демонстрация тернарного поиска по массиву
+    arr = [1, 3, 5, 7, 9, 11, 15, 18, 21, 24, 30]
+    print("Массив:", arr)
+
+    x = 15
+    idx = ternary_search_array(arr, x)
+    print("\nИскомое значение:", x)
+    print("Найденный индекс:", idx)
+
+    y = 14
+    idx2 = ternary_search_array(arr, y)
+    print("\nИскомое значение:", y)
+    print("Найденный индекс:", idx2)
+
+    # Демонстрация тернарного поиска экстремума унимодальной функции
+    def f(t: float) -> float:
+        # максимум около t = 2.5
+        return -(t - 2.5) ** 2 + 5.0
+
+    left, right = 0.0, 5.0
+    xmax = ternary_search_unimodal(f, left, right, eps=1e-7)
+    print("\nПоиск максимума унимодальной функции на [0, 5]")
+    print("x* ~", xmax)
+    print("f(x*) ~", f(xmax))
+    
+Результат работы:
+Массив: [1, 3, 5, 7, 9, 11, 15, 18, 21, 24, 30]
+
+Искомое значение: 15
+Найденный индекс: 6
+
+Искомое значение: 14
+Найденный индекс: -1
+
+Поиск максимума унимодальной функции на [0, 5]
+x* ~ 2.5000000013503394
+f(x*) ~ 5.0
 
 from typing import List, Tuple
 
