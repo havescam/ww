@@ -1,3 +1,4 @@
+Блочная (корзинная) сортировка
 from typing import List, Callable, Iterable
 
 def insertion_sort(arr: List[float]) -> None:
@@ -58,6 +59,7 @@ if __name__ == "__main__":
 Пример 4: исходный = [1] -> отсортированный = [1]
 Пример 5: исходный = [7, 7, 7, 7] -> отсортированный = [7, 7, 7, 7]
 
+Блинная сортировка
 from typing import List, Tuple
 
 def flip_prefix(a: List[int], k: int) -> None:
@@ -130,6 +132,7 @@ flip(4) -> [2, 3, 1, 6, 7, 10]
 flip(2) -> [3, 2, 1, 6, 7, 10]
 flip(3) -> [1, 2, 3, 6, 7, 10]
 
+Сортировка бусинами (гравитационная)
 from typing import List, Tuple
 
 def bead_sort(arr: List[int]) -> List[int]:
@@ -260,6 +263,7 @@ if __name__ == "__main__":
 Считывание результата по строкам:
 [0, 1, 1, 2, 3, 4, 5]
 
+Тернарный поиск (Ternary Search)
 from typing import List, Tuple
 
 def ternary_search_array(arr: List[int], target: int) -> int:
@@ -342,6 +346,7 @@ if __name__ == "__main__":
 x* ~ 2.5000000013503394
 f(x*) ~ 5.0
 
+Экспоненциальный поиск (Exponential Search) 
 from typing import List, Tuple
 
 def binary_search(arr: List[int], left: int, right: int, target: int) -> int:
@@ -398,3 +403,63 @@ if __name__ == "__main__":
 Результат: индекс = -1
 
 
+Поиск скачками (Jump Search)
+import math
+from typing import List, Tuple
+def jump_search(arr: List[int], x: int) -> Tuple[int, Tuple[int, int]]:
+    """
+    Поиск скачками по отсортированному массиву arr.
+    Возвращает (индекс_или_-1, (левая_граница_блока, правая_граница_блока)).
+    """
+    n = len(arr)
+    if n == 0:
+        return -1, (0, -1)
+
+    # Оптимальный размер прыжка m = floor(sqrt(n))
+    m = int(math.sqrt(n))
+    if m == 0:
+        m = 1
+
+    # Прыжки по блокам: 0, m, 2m, 3m, ...
+    prev = 0
+    while prev < n and arr[min(prev + m, n) - 1] < x:
+        prev += m
+
+    left = max(prev - m, 0)
+    right = min(prev, n - 1)
+
+    # Линейный поиск внутри найденного блока [left, right]
+    for i in range(left, min(right + 1, n)):
+        if arr[i] == x:
+            return i, (left, right)
+        if arr[i] > x:
+            break
+
+    return -1, (left, right)
+
+if __name__ == "__main__":
+    data = [1, 3, 5, 7, 9, 11, 13, 15, 18, 21, 34, 55, 89]
+    print("Массив:", data)
+
+    x = 15
+    idx, block = jump_search(data, x)
+    print("\nИскомое:", x)
+    print("Проверенный блок:", block)
+    print("Результат: индекс =", idx)
+
+    y = 14
+    idx2, block2 = jump_search(data, y)
+    print("\nИскомое:", y)
+    print("Проверенный блок:", block2)
+    print("Результат: индекс =", idx2)
+
+Результат работы:
+Массив: [1, 3, 5, 7, 9, 11, 13, 15, 18, 21, 34, 55, 89]
+
+Искомое: 15
+Проверенный блок: (3, 6)
+Результат: индекс = -1
+
+Искомое: 14
+Проверенный блок: (3, 6)
+Результат: индекс = -1
