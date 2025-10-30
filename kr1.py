@@ -58,19 +58,6 @@ if __name__ == "__main__":
 Пример 4: исходный = [1] -> отсортированный = [1]
 Пример 5: исходный = [7, 7, 7, 7] -> отсортированный = [7, 7, 7, 7]
 
-Шаги по строкам кода
-n = len(a); if n <= 1: return a[:] — база: пустой/один элемент уже отсортирован.​
-
-mn, mx = min(a), max(a); if mn == mx: return a[:] — все элементы равны, сортировать не нужно.​
-
-buckets_count = max(2, int(math.sqrt(n))) — выбирается число корзин k для распределения диапазона значений.​
-
-buckets = [[] for _ in range(buckets_count)] — создаются пустые корзины.​
-
-idx = int((x - mn) / (mx - mn) * (buckets_count - 1)); buckets[idx].append(x) — вычисляется индекс корзины и элемент добавляется в неё (равномерная разбивка диапазона).​
-
-для каждой корзины: insertion_sort(b); result.extend(b) — локальная сортировка корзин и конкатенация в итоговый массив
-
 from typing import List, Tuple
 
 def flip_prefix(a: List[int], k: int) -> None:
@@ -273,6 +260,8 @@ if __name__ == "__main__":
 Считывание результата по строкам:
 [0, 1, 1, 2, 3, 4, 5]
 
+ТЕРНАРНЫЙ ПОИСК СЮДА
+
 from typing import List, Tuple
 
 def binary_search(arr: List[int], left: int, right: int, target: int) -> int:
@@ -328,60 +317,4 @@ if __name__ == "__main__":
 Найденный диапазон: (4, 8)
 Результат: индекс = -1
 
-from typing import List, Tuple
 
-def binary_search(arr: List[int], left: int, right: int, target: int) -> int:
-    while left <= right:
-        mid = left + (right - left) // 2
-        if arr[mid] == target:
-            return mid
-        if arr[mid] < target:
-            left = mid + 1
-        else:
-            right = mid - 1
-    return -1
-
-def exponential_search(arr: List[int], target: int) -> Tuple[int, Tuple[int, int]]:
-    if not arr:
-        return -1, (0, -1)
-    if arr[0] == target:
-        return 0, (0, 0)
-
-    i = 1
-    n = len(arr)
-    # Увеличиваем границу экспоненциально: 1, 2, 4, 8, ...
-    while i < n and arr[i] < target:
-        i *= 2
-
-    left = i // 2
-    right = min(i, n - 1)
-    idx = binary_search(arr, left, right, target)
-    return idx, (left, right)
-
-if __name__ == "__main__":
-    data = [1, 2, 3, 5, 7, 10, 12, 15, 18, 20, 25, 30, 40, 60, 90]
-    print("Массив:", data)
-
-    x = 15
-    idx, rng = exponential_search(data, x)
-    print("\nИскомое:", x)
-    print("Диапазон для бинарного поиска:", rng)
-    print("Результат: индекс =", idx)
-
-    y = 13
-    idx2, rng2 = exponential_search(data, y)
-    print("\nИскомое:", y)
-    print("Диапазон для бинарного поиска:", rng2)
-    print("Результат: индекс =", idx2)
-
-Результат работы:
-
-Массив: [1, 2, 3, 5, 7, 10, 12, 15, 18, 20, 25, 30, 40, 60, 90]
-
-Искомое: 15
-Диапазон для бинарного поиска: (4, 8)
-Результат: индекс = 7
-
-Искомое: 13
-Диапазон для бинарного поиска: (4, 8)
-Результат: индекс = -1
