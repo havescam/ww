@@ -1,14 +1,21 @@
-def is_sorted_recursive_idx(arr, i=1):
-    if i >= len(arr):
+def is_sorted_recursive(arr):
+    # База: пустой список или один элемент — уже отсортирован
+    if len(arr) <= 1:
         return True
-    if arr[i-1] > arr[i]:
+    # Если найдено нарушение порядка, сразу False
+    if arr[0] > arr[1]:
         return False
-    return is_sorted_recursive_idx(arr, i+1)
+    # Рекурсивно проверяем «хвост» списка
+    return is_sorted_recursive(arr[1:])
 
 # Примеры:
-print(is_sorted_recursive_idx([1, 2, 2, 5]))   # True
-print(is_sorted_recursive_idx([1, 3, 2]))      # False
+print(is_sorted_recursive([]))                 # True
+print(is_sorted_recursive([1]))                # True
+print(is_sorted_recursive([1, 2, 2, 5]))       # True
+print(is_sorted_recursive([1, 3, 2]))          # False
 
 Результат работы: 
+True
+True
 True
 False
